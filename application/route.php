@@ -34,5 +34,5 @@ Route::get('api/:version/product/by_category','api/:version.Product/getAllInCate
 Route::get('api/:version/product/:id','api/:version.Product/getOne');
 
 Route::get('api/:version/category/all','api/:version.Category/getAllCategories');
-
 Route::post('api/:version/token/user1234','api/:version.Token/getToken');
+
