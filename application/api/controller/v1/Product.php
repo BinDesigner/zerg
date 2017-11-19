@@ -44,7 +44,7 @@ class Product
     public function getOne($id)
     {
         (new IDMustBePostiveInt())->goCheck();
-        $product = \app\api\model\Product::getProductDetail($id);
+        $product = ProductModel::getProductDetail($id);
         if(!$product){
             throw new ProductException();
         }
