@@ -9,7 +9,7 @@
 namespace app\api\validate;
 
 
-class AddressNew
+class AddressNew extends BaseValidate
 {
     protected $rule = [
         'name' =>'require|isNotEmpty',
@@ -18,6 +18,6 @@ class AddressNew
         'city' => 'require|isNotEmpty',
         'country' => 'require|isNotEmpty',
         'detail' => 'require|isNotEmpty',
-        'uid' => 'require|isNotEmpty',
+        //'uid' => 'require|isNotEmpty',
     ];
 }
