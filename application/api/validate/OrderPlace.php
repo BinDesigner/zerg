@@ -61,5 +61,10 @@ class OrderPlace extends BaseValidate
     {
         $validate = new BaseValidate($this->singleRule);
         $result=$validate->check($value);
+        if(!result){
+            throw new ParameterException([
+                'msg' => '商品列表参数错误',
+            ]);
+        }
     }
 }
