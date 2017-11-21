@@ -34,15 +34,19 @@ class Token
                  ->header('token');
         $vars = Cache::get($token);
         //判断缓存是否失效或有问题
-        if($vars){
+        if(!$vars){
             throw new TokenException();
         }
         else{
-            if(!is_array($vars)){
-                $vars = json_decode($vars,true);
+            if(!is_array($vars))
+            {
+                $vars = json_decode($vars, true);
+            }
+            if (array_key_exists($key, $vars)) {
+                return $vars[$key];
             }
             else{
-                throw new Exception('尝试获取Token变量不存在');
+                throw new Exception('尝试获取的Token变量并不存在');
             }
         }
     }
