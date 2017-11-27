@@ -13,6 +13,7 @@ use app\lib\exception\ParameterException;
 
 class OrderPlace extends BaseValidate
 {
+    // 客户传来的数据
     protected  $oProducts = [
         [
             'product_id' => 1,
@@ -27,7 +28,7 @@ class OrderPlace extends BaseValidate
             'count'=>3
         ]
     ];
-
+    // 数据库的数据
     protected  $Products = [
         [
             'product_id' => 1,
@@ -44,6 +45,7 @@ class OrderPlace extends BaseValidate
     ];
 
     protected  $rule = [
+        //定义自定义的验证器
         'products' => 'checkProducts'
     ];
 
@@ -53,17 +55,20 @@ class OrderPlace extends BaseValidate
     ];
 
     protected function checkProducts($values){
+        //再判断要为数组
+        if(!is_array($values)){
+            throw new ParameterException([
+                'msg' => '商品参数不正确'
+            ]);
+        }
+
+        //先判断不能为空
         if(empty($values)){
             throw new ParameterException([
                 'msg' => '商品列表不能为空'
             ]);
         }
 
-        if(!is_array($values)){
-            throw new ParameterException([
-                'msg' => '商品参数不正确'
-            ]);
-        }
 
         foreach ($values as $value)
         {

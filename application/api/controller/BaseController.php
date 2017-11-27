@@ -14,11 +14,14 @@ use think\Controller;
 
 class BaseController extends Controller
 {
+    //tp5的前置方法
+    // 用户和CMS管理员都可以访问的权限
     protected  function checkPrimaryScope()
     {
         TokenService::needPrimaryScope();
     }
 
+    // 只有用户才能访问的接口权限
     protected  function checkExclusiveScope()
     {
         TokenService::needExclusiveScope();

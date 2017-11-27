@@ -58,12 +58,14 @@ class Token
         $uid = self::getCurrentTokenVar('uid');
         return $uid;
     }
+
+
     // 用户和CMS管理员都可以访问的权限
     public static function needPrimaryScope()
     {
         $scope = self::getCurrentTokenVar('scope');
         if($scope){
-            if($scope == ScopeEnum::User){
+            if($scope >= ScopeEnum::User){
                 return true;
             }
             else{

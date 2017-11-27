@@ -10,12 +10,8 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
-use app\api\validate\OrderPlace;
-use app\lib\enum\ScopeEnum;
-use app\lib\exception\ForbiddenException;
-use app\lib\exception\TokenException;
-use think\Controller;
 use app\api\service\Token as TokenService;
+use app\api\validate\OrderPlace;
 
 class Order extends BaseController
 {
