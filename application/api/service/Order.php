@@ -48,13 +48,22 @@ class Order
           'totalCount' => 0,
           'pStatus' => [],
           'snapAddress' => null,
-          'snapName' => ''
+          'snapName' => '',
+          'snapImg' => ''
         ];
 
         $snap['orderPrice'] = $status['orderPrice'];
         $snap['totalCount'] = $status['totalCount'];
         $snap['pStatus'] = $status['pStatusArray'];
+        // 数组序列化
         $snap['snapAddress'] = Json_encode($this->getUserAddress());
+        $snap['snapName'] = $this ->products[0]['name'];
+        $snap['snapImg'] = $this->products[0]['main_img_url'];
+
+        if(count($this->products) > 1)
+        {
+            $snap['snapName'] .= '等';
+        }
     }
 
     private function getUserAddress(){
@@ -125,7 +134,7 @@ class Order
             $product = $products[$pIndex];
             $pStatus['id'] = $product['id'];
             $pStatus['count'] = $oCount;
-            $pStatus['totalPrice'] = $product['price'] = $oCount;
+            $pStatus['totalPrice'] = $product['price'] * $oCount;
 
             if($product['stock'] - $oCount >= 0){
                 $pStatus['haveStock'] = true;
