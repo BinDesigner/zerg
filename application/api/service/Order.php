@@ -9,10 +9,14 @@
 namespace app\api\service;
 
 
+use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\UserAddress;
+use app\api\model\Order as OrderModel;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
+
+use think\Exception;
 
 class Order
 {
@@ -38,11 +42,62 @@ class Order
         }
 
         // 开始创建订单
-        $orderSnap = $this->snapOrder();
+        $orderSnap = $this->snapOrder($status);
+        $order = $this->createOrder($orderSnap);
+        $order['pass'] = true;
+        return $order;
+    }
+
+    public function createOrder($snap)
+    {
+        try {
+            $orderNo = $this->makeOrderNo();
+            $order = new OrderModel();
+            //赋值到模型，改变数据库
+            $order->user_id = $this->uid;
+            $order->order_no = $orderNo;
+            $order->total_price = $snap['orderPrice'];
+            $order->total_count = $snap['totalCount'];
+            $order->snap_img = $snap['snapImg'];
+            $order->snap_name = $snap['snapName'];
+            $order->snap_address = $snap['snapAddress'];
+            $order->snap_items = json_encode($snap['pStatus']);
+
+            //写进数据库
+            $order->save();
+
+            $orderID = $order->id;
+            $create_time = $order->create_time;
+            foreach ($this->oProducts as &$p) //修改数组里面的属性
+            {
+                $p['order_id'] = $orderID;
+            }
+            $orderProduct = new OrderProduct();
+            $orderProduct->saveAll($this->oProducts);
+            return [
+                'order_no' => $orderNo,
+                'order_id' => $orderID,
+                'create_time' => $create_time
+            ];
+        }
+        catch(Exception $ex)
+        {
+            throw $ex;
+        }
+    }
+
+    public static function makeOrderNo()
+    {
+        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+        $orderSn =
+            $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
+                'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
+                '%02d', rand(0, 99));
+        return $orderSn;
     }
 
     // 生成订单快照
-    private function snpOrder($status){
+    private function snapOrder($status){
         $snap = [
           'orderPrice' => 0,
           'totalCount' => 0,
@@ -152,7 +207,7 @@ class Order
         //先将product_id放到oPIS里，才一次性去查
         $oPIDs = [];
         foreach ($oProducts as $item) {
-            array_push($oPIDS, $item['product_id']);
+            array_push($oPIDs, $item['product_id']);
         }
         $products = Product::all($oPIDs)
             ->visible(['id','price','stock','name','main_img_url'])

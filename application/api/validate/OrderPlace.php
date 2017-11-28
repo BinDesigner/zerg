@@ -13,7 +13,7 @@ use app\lib\exception\ParameterException;
 
 class OrderPlace extends BaseValidate
 {
-    // 客户传来的数据
+     //客户传来的数据
     protected  $oProducts = [
         [
             'product_id' => 1,
@@ -50,7 +50,7 @@ class OrderPlace extends BaseValidate
     ];
 
     protected $singleRule = [
-        'products' => 'require|isPositiveInteger',
+        'product_id' => 'require|isPositiveInteger',
         'count' => 'require|isPositiveInteger'
     ];
 
@@ -81,7 +81,7 @@ class OrderPlace extends BaseValidate
     {
         $validate = new BaseValidate($this->singleRule);
         $result=$validate->check($value);
-        if(!result){
+        if(!$result){
             throw new ParameterException([
                 'msg' => '商品列表参数错误',
             ]);
