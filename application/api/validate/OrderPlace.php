@@ -14,35 +14,35 @@ use app\lib\exception\ParameterException;
 class OrderPlace extends BaseValidate
 {
      //客户传来的数据
-    protected  $oProducts = [
-        [
-            'product_id' => 1,
-            'count'=>3
-        ],
-        [
-            'product_id' => 2,
-            'count'=>3
-        ],
-        [
-            'product_id' => 3,
-            'count'=>3
-        ]
-    ];
-    // 数据库的数据
-    protected  $Products = [
-        [
-            'product_id' => 1,
-            'count'=>3
-        ],
-        [
-            'product_id' => 2,
-            'count'=>3
-        ],
-        [
-            'product_id' => 3,
-            'count'=>3
-        ]
-    ];
+//    protected  $oProducts = [
+//        [
+//            'product_id' => 1,
+//            'count'=>3
+//        ],
+//        [
+//            'product_id' => 2,
+//            'count'=>3
+//        ],
+//        [
+//            'product_id' => 3,
+//            'count'=>3
+//        ]
+//    ];
+//    // 数据库的数据
+//    protected  $Products = [
+//        [
+//            'product_id' => 1,
+//            'count'=>3
+//        ],
+//        [
+//            'product_id' => 2,
+//            'count'=>3
+//        ],
+//        [
+//            'product_id' => 3,
+//            'count'=>3
+//        ]
+//    ];
 
     protected  $rule = [
         //定义自定义的验证器

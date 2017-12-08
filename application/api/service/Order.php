@@ -36,7 +36,8 @@ class Order
         $this->uid = $uid;
 
         $status = $this -> getOrderStatus();
-        if(!$status['pass']){
+        if(!$status['pass'])
+        {
             $status['order_id'] = -1;
             return $status;
         }
@@ -61,6 +62,7 @@ class Order
             $order->snap_img = $snap['snapImg'];
             $order->snap_name = $snap['snapName'];
             $order->snap_address = $snap['snapAddress'];
+            //数组就要序列化
             $order->snap_items = json_encode($snap['pStatus']);
 
             //写进数据库
