@@ -34,8 +34,9 @@ class Order
         $this->oProducts = $oProducts;
         $this->products = $this->getProductsByOrder($oProducts);
         $this->uid = $uid;
-
         $status = $this -> getOrderStatus();
+
+        // 判断这个订单的状态是否能满足，满足就pass
         if(!$status['pass'])
         {
             $status['order_id'] = -1;
@@ -137,6 +138,7 @@ class Order
         return $userAddress->toArray();
     }
 
+    // 判断订单的状态，看看数据库是否满足
     private function getOrderStatus()
     {
         $status = [
@@ -162,7 +164,9 @@ class Order
         return $status;
     }
 
+    // 判断订单中的单个商品是否满足
     private function getProductStatus($oPID,$oCount,$products){
+        // 当前$oPID在$products这个数组里面的序号
         $pIndex = -1;
 
         // 初始值 订单里面商品的具体信息
@@ -186,12 +190,13 @@ class Order
         if($pIndex == -1){
             //客户端传递的product_id可能不存在
             throw new OrderException([
-                'msg' => 'id为'.$oPID.'商品不存在，创建订单失败'
+                'msg' => 'id为'.$oPID.'的商品不存在，创建订单失败'
             ]);
         }
         else{
             $product = $products[$pIndex];
             $pStatus['id'] = $product['id'];
+            $pStatus['name'] = $product['name'];
             $pStatus['count'] = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
 
@@ -215,7 +220,6 @@ class Order
         }
         $products = Product::all($oPIDs)
             ->visible(['id','price','stock','name','main_img_url'])
-            //
             ->toArray();
         return $products;
     }
